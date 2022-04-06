@@ -12,6 +12,7 @@ namespace UnitTests
         [Test]
         public void Test1()
         {
+            // Putting a comment in.
             Assert.Pass();
         }
     }
