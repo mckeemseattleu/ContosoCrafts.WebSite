@@ -1,30 +1,35 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 
 using ContosoCrafts.WebSite.Models;
 using ContosoCrafts.WebSite.Services;
 
-namespace ContosoCrafts.WebSite.Pages
+namespace ContosoCrafts.WebSite.Pages.Product
 {
     /// <summary>
-    /// Mike Koenig
+    /// Index Page will return all the data to show
     /// </summary>
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
-
-        public IndexModel(ILogger<IndexModel> logger,
-            JsonFileProductService productService)
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
+        /// <param name="productService"></param>
+        public IndexModel(JsonFileProductService productService)
         {
-            _logger = logger;
             ProductService = productService;
         }
 
+        // Data Service
         public JsonFileProductService ProductService { get; }
+        
+        // Collection of the Data
         public IEnumerable<ProductModel> Products { get; private set; }
 
+        /// <summary>
+        /// REST OnGet, return all data
+        /// </summary>
         public void OnGet()
         {
             Products = ProductService.GetAllData();

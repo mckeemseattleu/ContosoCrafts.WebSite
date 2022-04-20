@@ -4,7 +4,7 @@
 @inject JsonFileProductService ProductService
 
 <div class="card-columns">
-@foreach (var product in ProductService.GetProducts())
+@foreach (var product in ProductService.GetAllData())
 {
     <div class="card">
         <div class="card-img" style="background-image: url('@product.Image');">
@@ -77,9 +77,9 @@
 
     void SelectProduct(string productId)
     {
-      selectedProductId = productId;
-      selectedProduct = ProductService.GetProducts().First(x => x.Id == productId);
-      GetCurrentRating();
+        selectedProductId = productId;
+        selectedProduct = ProductService.GetAllData().First(x => x.Id == productId);
+        GetCurrentRating();
     }
 
     int currentRating = 0;
@@ -88,25 +88,25 @@
 
     void GetCurrentRating()
     {
-      if(selectedProduct.Ratings == null)
-      {
-        currentRating = 0;
-        voteCount = 0;
-      }
-      else
-      {
-        voteCount = selectedProduct.Ratings.Count();
-        voteLabel = voteCount > 1 ? "Votes" : "Vote";
-        currentRating = selectedProduct.Ratings.Sum() / voteCount;
-      }
+        if(selectedProduct.Ratings == null)
+        {
+            currentRating = 0;
+            voteCount = 0;
+        }
+        else
+        {
+            voteCount = selectedProduct.Ratings.Count();
+            voteLabel = voteCount > 1 ? "Votes" : "Vote";
+            currentRating = selectedProduct.Ratings.Sum() / voteCount;
+        }
 
-      System.Console.WriteLine($"Current rating for {selectedProduct.Id}: {currentRating}");
+        System.Console.WriteLine($"Current rating for {selectedProduct.Id}: {currentRating}");
     }
 
     void SubmitRating(int rating)
     {
-      System.Console.WriteLine($"Rating received for {selectedProduct.Id}: {rating}");
-      ProductService.AddRating(selectedProductId, rating);
-      SelectProduct(selectedProductId);
+        System.Console.WriteLine($"Rating received for {selectedProduct.Id}: {rating}");
+        ProductService.AddRating(selectedProductId, rating);
+        SelectProduct(selectedProductId);
     }
 }

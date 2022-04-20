@@ -1,27 +1,19 @@
-using System.Linq;
-
-using Microsoft.Extensions.Logging;
-
-using Moq;
 
 using NUnit.Framework;
 
-using ContosoCrafts.WebSite.Pages;
+using ContosoCrafts.WebSite.Pages.Product;
 
-namespace UnitTests.Pages.Index
+namespace UnitTests.Pages.Product.Read
 {
-    public class IndexTests
+    public class ReadTests
     {
         #region TestSetup
-
-        public static IndexModel pageModel;
+        public static ReadModel pageModel;
 
         [SetUp]
         public void TestInitialize()
         {
-            var MockLoggerDirect = Mock.Of<ILogger<IndexModel>>();
-
-            pageModel = new IndexModel(MockLoggerDirect, TestHelper.ProductService)
+            pageModel = new ReadModel(TestHelper.ProductService)
             {
             };
         }
@@ -35,11 +27,11 @@ namespace UnitTests.Pages.Index
             // Arrange
 
             // Act
-            pageModel.OnGet();
+            pageModel.OnGet("jenlooper-cactus");
 
             // Assert
             Assert.AreEqual(true, pageModel.ModelState.IsValid);
-            Assert.AreEqual(true, pageModel.Products.ToList().Any());
+            Assert.AreEqual("The Quantified Cactus: An Easy Plant Soil Moisture Sensor", pageModel.Product.Title);
         }
         #endregion OnGet
     }
