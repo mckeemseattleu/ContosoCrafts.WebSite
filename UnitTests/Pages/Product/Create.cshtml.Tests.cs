@@ -1,27 +1,21 @@
 using System.Linq;
 
-using Microsoft.Extensions.Logging;
-
-using Moq;
-
 using NUnit.Framework;
 
-using ContosoCrafts.WebSite.Pages;
+using ContosoCrafts.WebSite.Pages.Product;
 
-namespace UnitTests.Pages.Index
+
+namespace UnitTests.Pages.Product.Create
 {
-    public class IndexTests
+    public class CreateTests
     {
         #region TestSetup
-
-        public static IndexModel pageModel;
+        public static CreateModel pageModel;
 
         [SetUp]
         public void TestInitialize()
         {
-            var MockLoggerDirect = Mock.Of<ILogger<IndexModel>>();
-
-            pageModel = new IndexModel(MockLoggerDirect, TestHelper.ProductService)
+            pageModel = new CreateModel(TestHelper.ProductService)
             {
             };
         }
@@ -33,13 +27,14 @@ namespace UnitTests.Pages.Index
         public void OnGet_Valid_Should_Return_Products()
         {
             // Arrange
+            var oldCount = TestHelper.ProductService.GetAllData().Count();
 
             // Act
             pageModel.OnGet();
 
             // Assert
             Assert.AreEqual(true, pageModel.ModelState.IsValid);
-            Assert.AreEqual(true, pageModel.Products.ToList().Any());
+            Assert.AreEqual(oldCount+1, TestHelper.ProductService.GetAllData().Count());
         }
         #endregion OnGet
     }
