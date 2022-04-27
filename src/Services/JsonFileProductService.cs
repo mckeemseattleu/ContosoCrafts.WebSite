@@ -35,21 +35,44 @@ namespace ContosoCrafts.WebSite.Services
             }
         }
 
+        /// <summary>
+        /// Add Rating
+        /// 
+        /// Take in the product ID and the rating
+        /// If the rating does not exist, add it
+        /// Save the update
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <param name="rating"></param>
         public void AddRating(string productId, int rating)
         {
+            // If the ProductID is invalid, return
+            if (string.IsNullOrEmpty(productId))
+            {
+                return;
+            }
+
             var products = GetAllData();
 
-            if(products.First(x => x.Id == productId).Ratings == null)
+            // Look up the product, if it does not exist, return
+            var data = products.FirstOrDefault(x => x.Id.Equals(productId));
+            if (data == null)
             {
-                products.First(x => x.Id == productId).Ratings = new int[] { rating };
-            }
-            else
-            {
-                var ratings = products.First(x => x.Id == productId).Ratings.ToList();
-                ratings.Add(rating);
-                products.First(x => x.Id == productId).Ratings = ratings.ToArray();
+                return;
             }
 
+            // Check to see if ratings exist, if there are not, then create the array
+            if (data.Ratings == null)
+            {
+                data.Ratings = new int[] { };
+            }
+
+            // Add the Rating to the Array
+            var ratings = data.Ratings.ToList();
+            ratings.Add(rating);
+            data.Ratings = ratings.ToArray();
+
+            // Save the data back to the data store
             SaveData(products);
         }
 
