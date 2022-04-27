@@ -113,7 +113,7 @@ namespace ContosoCrafts.WebSite.Services
                 Image = "",
             };
 
-            // Get the current set, and append the new record to it
+            // Get the current set, and append the new record to it becuase IEnumerable does not have Add
             var dataSet = GetAllData();
             dataSet = dataSet.Append(data);
 
