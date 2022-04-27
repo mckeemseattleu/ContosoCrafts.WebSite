@@ -44,12 +44,12 @@ namespace ContosoCrafts.WebSite.Services
         /// </summary>
         /// <param name="productId"></param>
         /// <param name="rating"></param>
-        public void AddRating(string productId, int rating)
+        public bool AddRating(string productId, int rating)
         {
             // If the ProductID is invalid, return
             if (string.IsNullOrEmpty(productId))
             {
-                return;
+                return false;
             }
 
             var products = GetAllData();
@@ -58,20 +58,20 @@ namespace ContosoCrafts.WebSite.Services
             var data = products.FirstOrDefault(x => x.Id.Equals(productId));
             if (data == null)
             {
-                return;
+                return false;
             }
 
 
             // Check Rating for boundries, do not allow ratings below 0
             if (rating < 0)
             {
-                return;
+                return false;
             }
 
             // Check Rating for boundries, do not allow ratings above 5
             if (rating > 5)
             {
-                return;
+                return false;
             }
 
             // Check to see if ratings exist, if there are not, then create the array
@@ -87,6 +87,8 @@ namespace ContosoCrafts.WebSite.Services
 
             // Save the data back to the data store
             SaveData(products);
+
+            return true;
         }
 
         /// <summary>
